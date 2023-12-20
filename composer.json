@@ -1,0 +1,26 @@
+{
+    "name": "guillermo-rod/laravel-custom-fields",
+    "description": "Creating custom fields for eloquent models has never been easier",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "GuillermoRod\\CustomFields\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Guillermo Rodriguez",
+            "email": "guillermo.rodriguez.dev@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "GuillermoRod\\CustomFields\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
