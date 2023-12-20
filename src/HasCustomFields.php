@@ -2,7 +2,7 @@
 
 namespace GuillermoRod\CustomFields;
 
-use App\Models\Morphs\CustomField;
+use GuillermoRod\CustomFields\CustomField;
 use Illuminate\Support\Arr;
 
 trait HasCustomFields
