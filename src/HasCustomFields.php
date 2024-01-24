@@ -4,6 +4,7 @@ namespace GuillermoRod\CustomFields;
 
 use GuillermoRod\CustomFields\CustomField;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 trait HasCustomFields
 {
@@ -89,6 +90,34 @@ trait HasCustomFields
     }
 
     /**
+     * Update each custom field value searching by name
+     *
+     * @param array $customFields
+     * @param boolean $touch
+     * @return boolean
+     */
+    public function updateCustomFieldValuesByName(array $customFields, $touch = true)
+    {
+        try {
+            DB::beginTransaction();
+                foreach ($customFields as $key => $field) {        
+                    $this->getFirstCustomField($field['name'])->update([
+                        'value' => $field['value']
+                    ]);
+                }
+
+                if ($touch) {
+                    $this->touch();
+                }
+            DB::commit();
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return false;
+        }
+    }
+    
+    /**
      * Pluck custom fields as [name => value]
      *
      * @return array
@@ -96,6 +125,16 @@ trait HasCustomFields
     public function pluckCustomFields()
     {
         return $this->custom_fields->mapWithKeys(fn ($attr) => [$attr->name => $attr->value])->toArray();
+    }
+
+    public function getFirstCustomField($name)
+    {
+        return $this->custom_fields->firstWhere('name', $name);
+    }
+
+    public function getFirstCustomFieldValue($name)
+    {
+        return $this->getFirstCustomField($name)->value;
     }
 
     /**
